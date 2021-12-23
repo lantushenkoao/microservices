@@ -1,0 +1,24 @@
+#user name is user
+spring.security.user.password=xxx
+
+spring.datasource.url=jdbc:postgresql://localhost:5432/calendar
+spring.datasource.username=postgres
+spring.datasource.password=xxx
+
+spring.datasource.testWhileIdle = true
+spring.datasource.validationQuery = SELECT 1
+
+## Hibernate Properties
+# The SQL dialect makes Hibernate generate better SQL for the chosen database
+spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
+#spring.datasource.driver-class-name=org.postgresql.Driver
+spring.jpa.hibernate.ddl-auto = none
+spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation=true
+
+
+spring.liquibase.change-log=classpath:db/changelog/db.changelog-master.xml
+spring.liquibase.enabled=true
+
+jwt.cookie-name=X-AUTH-COOKIE
+jwt.secret=xxx
+jwt.issuer=lantushenko.com

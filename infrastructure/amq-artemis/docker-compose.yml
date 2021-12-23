@@ -1,0 +1,18 @@
+services:
+  activemq:
+    image: "lantushenkoao/artemis-adoptopenjdk-11"
+    restart: always
+    environment:
+      ANONYMOUS_LOGIN: "false"
+      ARTEMIS_USER: ${AMQ_USER:?err}
+      ARTEMIS_PASSWORD: ${AMQ_PASSWORD:?err}
+      ARTEMIS_MIN_MEMORY: 1024
+      ARTEMIS_MAX_MEMORY: 4096
+      TZ: Europe/Moskow
+#    volumes:
+#      - ${HOST_AMQ_ROOT}/logs:/var/lib/artemis-instance/log
+#      - ${HOST_AMQ_CONFIGS}/conf:/var/lib/artemis-instance/etc
+#      - ${HOST_AMQ_ROOT}/data:/var/lib/artemis-instance/data
+    ports:
+      - "61616:61616" # broker
+      - "8161:8161"   # web

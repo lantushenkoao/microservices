@@ -1,0 +1,28 @@
+services:
+  db_postgres:
+    container_name: postgres
+    build: ../postgres
+    volumes:
+      - "pgdata:/var/lib/postgresql/data/pgdata"
+    ports:
+      - "127.0.0.1:5432:5432"
+    environment:
+      - "POSTGRES_USER=${PG_USER:?err}"
+      - "POSTGRES_PASSWORD=${PG_PASS:?err}"
+      - "PGDATA=/var/lib/postgresql/data/pgdata"
+      - "SERVICE_NAME=postgres"
+      - "SERVICE_5432_CHECK_TCP=true"
+      - "SERVICE_5432_CHECK_INTERVAL=15s"
+      - "SERVICE_5432_CHECK_TIMEOUT=3s"
+  pgadmin:
+    container_name: pgadmin4
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:?err}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:?err}
+    ports:
+      - "5050:80"
+volumes:
+  pgdata:
+    name: calendar-pgdata
