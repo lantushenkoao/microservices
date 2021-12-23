@@ -1,4 +1,4 @@
-package com.lantushenko.webapp.services;
+package com.lantushenko.webapp.service;
 
 import org.springframework.stereotype.Service;
 

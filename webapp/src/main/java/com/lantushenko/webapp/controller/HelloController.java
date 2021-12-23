@@ -1,6 +1,6 @@
-package com.lantushenko.webapp.controllers;
+package com.lantushenko.webapp.controller;
 
-import com.lantushenko.webapp.controllers.dto.HelloResponse;
+import com.lantushenko.webapp.controller.dto.HelloResponse;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

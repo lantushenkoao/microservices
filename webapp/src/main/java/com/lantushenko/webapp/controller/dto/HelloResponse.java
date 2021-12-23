@@ -1,4 +1,4 @@
-package com.lantushenko.webapp.controllers.dto;
+package com.lantushenko.webapp.controller.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
