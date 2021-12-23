@@ -1,8 +1,8 @@
 package com.lantushenko.webapp.model;
 
-import com.fasterxml.jackson.annotation.JsonValue;
 import com.sun.istack.NotNull;
 import lombok.Data;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
@@ -13,12 +13,14 @@ import javax.validation.constraints.Size;
 public class Role {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
-    private int id;
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
+    private String id;
 
     @NotNull
     @Size(max = 100)
-    @JsonValue
     private String name;
 }

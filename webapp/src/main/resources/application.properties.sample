@@ -22,3 +22,4 @@ spring.liquibase.enabled=true
 jwt.cookie-name=X-AUTH-COOKIE
 jwt.secret=xxx
 jwt.issuer=lantushenko.com
+jwt.CookieExpirationDays=7

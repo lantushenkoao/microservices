@@ -19,7 +19,7 @@ import java.util.Set;
 @Getter
 @Setter
 @NamedEntityGraph(name = "User.roles", attributeNodes = @NamedAttributeNode("roles"))
-@Where(clause = "is_deleted = 0")
+@Where(clause = "is_deleted = false")
 @ToString(exclude = {"password"})
 public class User {
 
@@ -43,8 +43,6 @@ public class User {
     @Email
     private String email;
 
-    //@NotBlank password should be blank for SSO login
-    @JsonIgnore
     private String password;
 
     @ManyToMany(fetch = FetchType.EAGER)

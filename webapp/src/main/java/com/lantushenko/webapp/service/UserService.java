@@ -28,7 +28,7 @@ public class UserService implements UserDetailsService {
 
         List<SimpleGrantedAuthority> authorities = new ArrayList<>(getGrantedAuthority(user));
 
-        return new AuthenticatedUserDetails(user.getPassword(), user.getUsername(), true, true, authorities, true, true);
+        return new AuthenticatedUserDetails(user.getId(), user.getPassword(), user.getUsername(), true, true, authorities, true, true);
     }
 
     private List<SimpleGrantedAuthority> getGrantedAuthority(User user) {

@@ -15,6 +15,7 @@ import org.springframework.web.util.WebUtils;
 import javax.annotation.Resource;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -39,8 +40,12 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
         // Get authorization header and validate
 
-        final String header = Optional.of(WebUtils.getCookie(request, authCookieName))
-                .orElseThrow().getValue();
+        Cookie cookie = WebUtils.getCookie(request, authCookieName);
+        if(null == cookie){
+            chain.doFilter(request, response);
+            return;
+        }
+        final String header = cookie.getValue();
 
         if (!StringUtils.hasText(header) || !header.startsWith("Bearer ")) {
             chain.doFilter(request, response);

@@ -15,15 +15,16 @@ public class JwtTokenUtil {
     private String jwtSecret;
     @Value("${jwt.issuer}")
     private String jwtIssuer;
-
+    @Value("${jwt.CookieExpirationDays}")
+    private int jwtCookieExpirationDays;
     private final Logger logger = Logger.getLogger(JwtTokenUtil.class.getName());
 
-    public String generateAccessToken(User user) {
+    public String generateAccessToken(AuthenticatedUserDetails user) {
         return Jwts.builder()
                 .setSubject(String.format("%s,%s", user.getId(), user.getUsername()))
                 .setIssuer(jwtIssuer)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 7 * 24 * 60 * 60 * 1000)) // 1 week
+                .setExpiration(new Date(System.currentTimeMillis() + jwtCookieExpirationDays * 24 * 60 * 60 * 1000)) // 1 week
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();
     }
