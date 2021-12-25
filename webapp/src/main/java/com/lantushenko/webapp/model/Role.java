@@ -12,6 +12,11 @@ import javax.validation.constraints.Size;
 @Table(name = "roles")
 public class Role {
 
+    public interface RoleName {
+        String ADMIN = "ADMIN";
+        String USER = "USER";
+    }
+
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(

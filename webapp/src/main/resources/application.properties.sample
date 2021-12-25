@@ -19,7 +19,7 @@ spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation=true
 spring.liquibase.change-log=classpath:db/changelog/db.changelog-master.xml
 spring.liquibase.enabled=true
 
-jwt.cookie-name=X-AUTH-COOKIE
 jwt.secret=xxx
 jwt.issuer=lantushenko.com
-jwt.CookieExpirationDays=7
+jwt.ExpirationDays=7
+applicaiton.debugMode=true

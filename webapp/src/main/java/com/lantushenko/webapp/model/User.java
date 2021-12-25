@@ -37,7 +37,7 @@ public class User {
 
     @NotEmpty(message = "Введите логин")
     @Length(max = 20, message = "Логин должен быть не длиннее {max} символов")
-    private String username;
+    private String login;
 
     @Length(max = 50, message = "Электронный адрес должен быть до {max} символов")
     @Email

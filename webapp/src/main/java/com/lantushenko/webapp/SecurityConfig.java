@@ -1,8 +1,10 @@
 package com.lantushenko.webapp;
 
-import com.lantushenko.webapp.service.JwtTokenFilter;
+import com.lantushenko.webapp.auth.JwtTokenFilter;
 import com.lantushenko.webapp.service.UserService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -37,6 +39,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private JwtTokenFilter jwtTokenFilter;
     @Resource
     private UserService userService;
+    @Value("${applicaiton.debugMode}")
+    private Boolean debugMode;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -99,10 +103,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         UrlBasedCorsConfigurationSource source =
                 new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
-        //config.setAllowCredentials(true);
-        config.addAllowedOrigin("*");
+        //config.setAllowCredentials(true); //only care about this if using cookies
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
+        if(debugMode) {
+            config.addAllowedOrigin("*");
+            config.addExposedHeader(HttpHeaders.AUTHORIZATION);
+        }
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
     }

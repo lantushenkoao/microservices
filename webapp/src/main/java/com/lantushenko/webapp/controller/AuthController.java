@@ -4,6 +4,7 @@ import com.lantushenko.webapp.auth.AuthenticatedUserDetails;
 import com.lantushenko.webapp.auth.JwtTokenUtil;
 import com.lantushenko.webapp.controller.dto.AuthRequest;
 import com.lantushenko.webapp.controller.dto.AuthenticatedUser;
+import com.lantushenko.webapp.controller.dto.UserDto;
 import com.lantushenko.webapp.controller.mapper.UserMapper;
 import com.lantushenko.webapp.model.User;
 import com.lantushenko.webapp.service.UserService;
@@ -29,8 +30,6 @@ import javax.validation.Valid;
 @RequestMapping(path = "api/auth")
 public class AuthController {
 
-    @Value("${jwt.cookie-name}")
-    private String jwtCookieName;
     @Resource
     private UserService userService;
     @Resource
@@ -39,29 +38,25 @@ public class AuthController {
     private AuthenticationManager authenticationManager;
     @Resource
     private UserMapper userMapper;
-    @Value("${jwt.CookieExpirationDays}")
+    @Value("${jwt.ExpirationDays}")
     private int jwtCookieExpirationDays;
+    @Value("${applicaiton.debugMode}")
+    private Boolean debugMode;
 
 
     @PostMapping("login")
-    public ResponseEntity<AuthenticatedUser> login(@RequestBody @Valid AuthRequest request, HttpServletResponse response) {
+    public ResponseEntity<UserDto> login(@RequestBody @Valid AuthRequest request, HttpServletResponse response) {
         try {
             Authentication authenticate = authenticationManager
                     .authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
 
             AuthenticatedUserDetails authenticatedUser = (AuthenticatedUserDetails) authenticate.getPrincipal();
             String jwtToken = jwtTokenUtil.generateAccessToken(authenticatedUser);
+            User user = userService.loadUser(authenticatedUser.getUsername());
 
-            Cookie cookie = new Cookie(jwtCookieName, jwtToken);
-            cookie.setMaxAge(jwtCookieExpirationDays * 24 * 60 * 60);
-            cookie.setSecure(true);
-            cookie.setHttpOnly(true);
-            cookie.setPath("/");
-
-            response.addCookie(cookie);
-
-
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.AUTHORIZATION, jwtToken)
+                    .body(userMapper.toUserDto(user));
         } catch (BadCredentialsException ex) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }

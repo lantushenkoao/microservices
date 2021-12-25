@@ -1,6 +1,7 @@
 package com.lantushenko.webapp.service;
 
 import com.lantushenko.webapp.auth.AuthenticatedUserDetails;
+import com.lantushenko.webapp.model.Role;
 import com.lantushenko.webapp.model.User;
 import com.lantushenko.webapp.repository.UserRepository;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -18,9 +19,21 @@ public class UserService implements UserDetailsService {
     @Resource
     private UserRepository userRepository;
 
+    @Resource
+    private PermissionService permissionService;
+
+    public List<User> listUsers(){
+        permissionService.checkRole(Role.RoleName.ADMIN);
+        return userRepository.findAll();
+    }
+
+    public User loadUser(String login){
+        return userRepository.findByLogin(login);
+    }
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username);
+        User user = userRepository.findByLogin(username);
 
         if (null == user) {
             throw new UsernameNotFoundException(null);
@@ -28,7 +41,7 @@ public class UserService implements UserDetailsService {
 
         List<SimpleGrantedAuthority> authorities = new ArrayList<>(getGrantedAuthority(user));
 
-        return new AuthenticatedUserDetails(user.getId(), user.getPassword(), user.getUsername(), true, true, authorities, true, true);
+        return new AuthenticatedUserDetails(user.getId(), user.getPassword(), user.getLogin(), true, true, authorities, true, true);
     }
 
     private List<SimpleGrantedAuthority> getGrantedAuthority(User user) {

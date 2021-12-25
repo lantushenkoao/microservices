@@ -13,7 +13,7 @@
             <column name="name" type="varchar(512)">
                 <constraints nullable="false"/>
             </column>
-            <column name="username" type="varchar(50)">
+            <column name="login" type="varchar(50)">
                 <constraints nullable="false" unique="true"/>
             </column>
             <column name="email" type="varchar(512)"/>
@@ -59,7 +59,7 @@
             <column name="id">222f0c94-be13-493e-b233-0a4bb6d5b6cb</column>
             <column name="name">Алексей</column>
             <column name="email">test@test.test</column>
-            <column name="username">alantushenko</column>
+            <column name="login">alantushenko</column>
             <column name="password">$2a$10$gTZRllQZmqV43tCUMUo/V.EptmDOjwEGcagD/ZasdGj0pqLv95FUK</column>
         </insert>
         <insert tableName="user_roles">

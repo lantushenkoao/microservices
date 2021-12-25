@@ -1,16 +1,12 @@
 package com.lantushenko.webapp.controller.mapper;
 
-import com.lantushenko.webapp.controller.dto.AuthenticatedUser;
+import com.lantushenko.webapp.controller.dto.UserDto;
 import com.lantushenko.webapp.model.User;
+import org.mapstruct.Mapper;
 import org.springframework.stereotype.Component;
 
 @Component
-public class UserMapper {
-    public AuthenticatedUser toAuthenticatedUser(User user){
-        return AuthenticatedUser.builder()
-                .id(user.getId())
-                .fullName(user.getName())
-                .username(user.getUsername())
-                .build();
-    }
+@Mapper(componentModel = "spring")
+public abstract class UserMapper {
+    public abstract UserDto toUserDto(User user);
 }

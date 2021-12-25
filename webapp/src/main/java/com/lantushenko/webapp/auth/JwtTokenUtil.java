@@ -1,6 +1,5 @@
 package com.lantushenko.webapp.auth;
 
-import com.lantushenko.webapp.model.User;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -15,8 +14,8 @@ public class JwtTokenUtil {
     private String jwtSecret;
     @Value("${jwt.issuer}")
     private String jwtIssuer;
-    @Value("${jwt.CookieExpirationDays}")
-    private int jwtCookieExpirationDays;
+    @Value("${jwt.ExpirationDays}")
+    private int jwtExpirationDays;
     private final Logger logger = Logger.getLogger(JwtTokenUtil.class.getName());
 
     public String generateAccessToken(AuthenticatedUserDetails user) {
@@ -24,9 +23,8 @@ public class JwtTokenUtil {
                 .setSubject(String.format("%s,%s", user.getId(), user.getUsername()))
                 .setIssuer(jwtIssuer)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + jwtCookieExpirationDays * 24 * 60 * 60 * 1000)) // 1 week
-                .signWith(SignatureAlgorithm.HS512, jwtSecret)
-                .compact();
+                .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationDays * 24 * 60 * 60 * 1000)) // 1 week
+                .signWith(SignatureAlgorithm.HS512, jwtSecret).compact();
     }
 
     public String getUserId(String token) {
