@@ -13,7 +13,7 @@
                    url: backendHost + '/api/auth/login',
 
                    data: JSON.stringify({
-                       'username': username,
+                       'login': username,
                        'password': password
                    }),
                    dataType: 'json',
@@ -31,7 +31,7 @@
                     headers: {
                         "Authorization": 'Bearer ' + jwt
                     },
-                    url: backendHost + '/api/user/list'
+                    url: backendHost + '/api/users'
                 });
             });
         });

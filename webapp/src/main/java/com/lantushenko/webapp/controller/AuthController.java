@@ -3,7 +3,6 @@ package com.lantushenko.webapp.controller;
 import com.lantushenko.webapp.auth.AuthenticatedUserDetails;
 import com.lantushenko.webapp.auth.JwtTokenUtil;
 import com.lantushenko.webapp.controller.dto.AuthRequest;
-import com.lantushenko.webapp.controller.dto.AuthenticatedUser;
 import com.lantushenko.webapp.controller.dto.UserDto;
 import com.lantushenko.webapp.controller.mapper.UserMapper;
 import com.lantushenko.webapp.model.User;
@@ -22,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
@@ -48,7 +46,7 @@ public class AuthController {
     public ResponseEntity<UserDto> login(@RequestBody @Valid AuthRequest request, HttpServletResponse response) {
         try {
             Authentication authenticate = authenticationManager
-                    .authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
+                    .authenticate(new UsernamePasswordAuthenticationToken(request.getLogin(), request.getPassword()));
 
             AuthenticatedUserDetails authenticatedUser = (AuthenticatedUserDetails) authenticate.getPrincipal();
             String jwtToken = jwtTokenUtil.generateAccessToken(authenticatedUser);

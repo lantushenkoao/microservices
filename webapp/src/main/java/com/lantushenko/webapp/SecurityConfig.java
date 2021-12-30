@@ -110,6 +110,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             config.addAllowedOrigin("*");
             config.addExposedHeader(HttpHeaders.AUTHORIZATION);
         }
+        config.addExposedHeader("X-Total-Count");
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
     }

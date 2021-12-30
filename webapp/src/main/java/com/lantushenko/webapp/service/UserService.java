@@ -4,6 +4,7 @@ import com.lantushenko.webapp.auth.AuthenticatedUserDetails;
 import com.lantushenko.webapp.model.Role;
 import com.lantushenko.webapp.model.User;
 import com.lantushenko.webapp.repository.UserRepository;
+import org.hibernate.ObjectNotFoundException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -11,6 +12,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,8 +29,17 @@ public class UserService implements UserDetailsService {
         return userRepository.findAll();
     }
 
+    @Transactional
+    public void save(User user){
+        userRepository.save(user);
+    }
+
     public User loadUser(String login){
         return userRepository.findByLogin(login);
+    }
+
+    public User loadUserById(String id){
+        return userRepository.findById(id).orElseThrow();
     }
 
     @Override

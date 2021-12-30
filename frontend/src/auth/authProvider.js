@@ -1,26 +1,38 @@
+import {LOCAL_STORAGE_AUTH} from '../api/constants';
+import {login} from '../api/auth';
+
+function parseJwt (token) {
+    var base64Url = token.split('.')[1];
+    var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+
+    return JSON.parse(jsonPayload);
+};
+
+
 export default {
-    // called when the user attempts to log in
-    login: ({ username }) => {
-        localStorage.setItem('username', username);
-        // accept all username/password combinations
-        return Promise.resolve();
+    login: ({ username, password }) =>  {
+        return login(username, password).then(response=>{
+            localStorage.setItem(LOCAL_STORAGE_AUTH, response.headers['authorization']);
+        });
     },
-    // called when the user clicks on the logout button
+
     logout: () => {
-        localStorage.removeItem('username');
+        localStorage.removeItem(LOCAL_STORAGE_AUTH);
         return Promise.resolve();
     },
-    // called when the API returns an error
+
     checkError: ({ status }) => {
         if (status === 401 || status === 403) {
-            localStorage.removeItem('username');
+            localStorage.removeItem(LOCAL_STORAGE_AUTH);
             return Promise.reject();
         }
         return Promise.resolve();
     },
-    // called when the user navigates to a new location, to check for authentication
     checkAuth: () => {
-        return localStorage.getItem('username')
+        return localStorage.getItem(LOCAL_STORAGE_AUTH)
             ? Promise.resolve()
             : Promise.reject();
     },
