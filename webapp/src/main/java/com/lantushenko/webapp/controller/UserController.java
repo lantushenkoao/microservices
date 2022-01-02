@@ -1,6 +1,7 @@
 package com.lantushenko.webapp.controller;
 
 import com.lantushenko.webapp.controller.dto.UserDto;
+import com.lantushenko.webapp.controller.dto.UserWithPasswordDto;
 import com.lantushenko.webapp.controller.mapper.UserMapper;
 import com.lantushenko.webapp.model.User;
 import com.lantushenko.webapp.service.UserService;
@@ -44,5 +45,20 @@ public class UserController {
         userMapper.update(userDto, existingUser);
         userService.save(existingUser);
         return userMapper.toUserDto(existingUser);
+    }
+
+    @PostMapping
+    public UserDto createUser(@RequestBody UserWithPasswordDto userDto){
+        User user = userMapper.create(userDto);
+        userService.save(user);
+
+        return userMapper.toUserDto(user);
+    }
+
+    @DeleteMapping("/{id}")
+    public UserDto deleteUser(@PathVariable String id){
+        User user = userService.loadUserById(id);
+        userService.delete(user);
+        return userMapper.toUserDto(user);
     }
 }

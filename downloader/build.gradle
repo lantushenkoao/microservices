@@ -15,6 +15,7 @@ repositories {
 dependencies {
 	compileOnly 'org.projectlombok:lombok'
 	implementation 'org.springframework.boot:spring-boot-starter'
+	implementation 'org.springframework.boot:spring-boot-starter-artemis'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 

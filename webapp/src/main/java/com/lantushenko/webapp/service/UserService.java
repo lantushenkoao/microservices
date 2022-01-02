@@ -34,6 +34,10 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
     }
 
+    @Transactional
+    public void delete(User user){
+        userRepository.delete(user);
+    }
     public User loadUser(String login){
         return userRepository.findByLogin(login);
     }
