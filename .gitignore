@@ -26,3 +26,10 @@ hs_err_pid*
 /webapp/src/main/resources/application.properties
 /.gradle/
 /.idea/
+/frontend/.idea
+/frontend/node_modules
+/webapp/.gradle/
+/webapp/build/
+/downloader/.gradle/
+/downloader/build/
+/api/build/

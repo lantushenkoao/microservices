@@ -10,6 +10,7 @@ import java.util.Collection;
 @Data
 @AllArgsConstructor
 public class AuthenticatedUserDetails implements UserDetails {
+    private String id;
     private String password;
     private String username;
     private boolean accountNonExpired;

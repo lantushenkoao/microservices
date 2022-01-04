@@ -1,3 +1,4 @@
 rootProject.name = 'file-monitor'
 include 'downloader'
 include 'webapp'
+include 'api'

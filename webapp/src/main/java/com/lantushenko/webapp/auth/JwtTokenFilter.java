@@ -1,6 +1,7 @@
-package com.lantushenko.webapp.service;
+package com.lantushenko.webapp.auth;
 
 import com.lantushenko.webapp.auth.JwtTokenUtil;
+import com.lantushenko.webapp.service.UserService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -15,6 +16,7 @@ import org.springframework.web.util.WebUtils;
 import javax.annotation.Resource;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -29,18 +31,13 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     @Resource
     private JwtTokenUtil jwtTokenUtil;
 
-    @Value("${jwt.cookie-name}")
-    private String authCookieName;
-
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain chain)
             throws ServletException, IOException {
         // Get authorization header and validate
-
-        final String header = Optional.of(WebUtils.getCookie(request, authCookieName))
-                .orElseThrow().getValue();
+        final String header = request.getHeader(HttpHeaders.AUTHORIZATION);
 
         if (!StringUtils.hasText(header) || !header.startsWith("Bearer ")) {
             chain.doFilter(request, response);

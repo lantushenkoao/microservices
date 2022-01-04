@@ -19,7 +19,7 @@ import java.util.Set;
 @Getter
 @Setter
 @NamedEntityGraph(name = "User.roles", attributeNodes = @NamedAttributeNode("roles"))
-@Where(clause = "is_deleted = 0")
+@Where(clause = "is_deleted = false")
 @ToString(exclude = {"password"})
 public class User {
 
@@ -37,14 +37,12 @@ public class User {
 
     @NotEmpty(message = "Введите логин")
     @Length(max = 20, message = "Логин должен быть не длиннее {max} символов")
-    private String username;
+    private String login;
 
     @Length(max = 50, message = "Электронный адрес должен быть до {max} символов")
     @Email
     private String email;
 
-    //@NotBlank password should be blank for SSO login
-    @JsonIgnore
     private String password;
 
     @ManyToMany(fetch = FetchType.EAGER)

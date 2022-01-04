@@ -1,8 +1,55 @@
 <html>
 <head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript">
+        var backendHost = "http://localhost:8080";
+        var jwt;
+        $(document).ready(function(){
+            $('.js-login').on('click',function(){
+                var password = $('.js-password').val();
+                var username = $('.js-user-name').val();
+                $.ajax({
+                   type: 'POST',
+                   url: backendHost + '/api/auth/login',
 
+                   data: JSON.stringify({
+                       'login': username,
+                       'password': password
+                   }),
+                   dataType: 'json',
+                   contentType: 'application/json; charset=utf-8',
+                   success: function(data, textStatus, response){
+                        jwt = response.getResponseHeader('Authorization');
+                        jQuery('.js-jwt-header').text(jwt);
+                   }
+                });
+
+            });
+            $('.js-list-users').on('click', function(){
+                $.ajax({
+                    type: 'GET',
+                    headers: {
+                        "Authorization": 'Bearer ' + jwt
+                    },
+                    url: backendHost + '/api/users'
+                });
+            });
+        });
+    </script>
 </head>
 <body>
+<p>
 Testing JWT login page
+    <input type="text" name="username" class="js-user-name" value="alantushenko"/>
+    <input type="password" name="username" class="js-password" value="Password01"/>
+    <input type="button" value="Login" class="js-login"/>
+</p>
+<p>
+    List users
+    <input type="button" value="List users" class="js-list-users">
+</p>
+<p>
+    JWT header: <span class="js-jwt-header"></span>
+</p>
 </body>
 </html>
