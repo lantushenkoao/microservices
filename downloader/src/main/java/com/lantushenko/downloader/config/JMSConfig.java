@@ -11,12 +11,7 @@ import org.springframework.jms.support.converter.MessageType;
 @Configuration
 public class JMSConfig {
 
-    @Value("${spring.artemis.broker-url}")
-    private String brokerURL;
-    @Value("${spring.artemis.user}")
-    private String user;
-    @Value("${spring.artemis.password}")
-    private String password;
+    public static final long DEFAULT_JMS_TIMEOUT = 10L;
 
     @Bean
     public MessageConverter jacksonJmsMessageConverter() {
@@ -25,13 +20,4 @@ public class JMSConfig {
         converter.setTypeIdPropertyName("_type");
         return converter;
     }
-
-    @Bean
-    public ActiveMQConnectionFactory artemisSSLConnectionFactory() {
-        ActiveMQConnectionFactory artemisConnectionFactory = new ActiveMQConnectionFactory(brokerURL);
-        artemisConnectionFactory.setUser(user);
-        artemisConnectionFactory.setPassword(password);
-        return artemisConnectionFactory;
-    }
-
 }

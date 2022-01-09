@@ -3,7 +3,7 @@ package com.lantushenko.webapp.controller;
 
 import com.lantushenko.api.FileQueryReply;
 import com.lantushenko.api.FileQueryRequest;
-import com.lantushenko.webapp.bus.FileDownloader;
+import com.lantushenko.webapp.bus.FileDownloaderGateway;
 import com.lantushenko.webapp.bus.FileExchangeGateway;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,11 +19,12 @@ public class FileController {
 
     @Resource
     private FileExchangeGateway fileExchangeGateway;
+    @Resource
+    private FileDownloaderGateway fileDownloader;
 
     @PostMapping("query")
     public void post() throws Exception{
         log.info("Sending file request...");
-        FileQueryReply reply = fileExchangeGateway.sendAndReceive(new FileQueryRequest("testFileName.txt"));
-        log.info("Received reply: " + reply.getFile());
+        fileDownloader.requestFile();
     }
 }

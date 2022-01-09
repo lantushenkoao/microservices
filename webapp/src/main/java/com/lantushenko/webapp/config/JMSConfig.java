@@ -17,14 +17,7 @@ import org.springframework.messaging.MessageChannel;
 @Configuration
 public class JMSConfig {
 
-    @Value("${spring.artemis.broker-url}")
-    private String brokerURL;
-    @Value("${spring.artemis.user}")
-    private String user;
-    @Value("${spring.artemis.password}")
-    private String password;
-
-    private static final long DEFAULT_JMS_TIMEOUT = 10L;
+    public static final long DEFAULT_JMS_TIMEOUT = 30L;
 
     @Bean // Serialize message content to json using TextMessage
     public MessageConverter jacksonJmsMessageConverter() {
@@ -32,27 +25,5 @@ public class JMSConfig {
         converter.setTargetType(MessageType.TEXT);
         converter.setTypeIdPropertyName("_type");
         return converter;
-    }
-
-    @Bean
-    @ServiceActivator(inputChannel = "filesExchange")
-    public JmsOutboundGateway jmsGateway(ActiveMQConnectionFactory activeMQConnectionFactory) {
-        JmsOutboundGateway gateway = new JmsOutboundGateway();
-        gateway.setConnectionFactory(activeMQConnectionFactory);
-        gateway.setMessageConverter(jacksonJmsMessageConverter());
-        gateway.setRequestDestinationName(FileQueryRequest.QUEUE_NAME);
-        gateway.setReplyDestinationName(FileQueryReply.QUEUE_NAME);
-        gateway.setCorrelationKey("JMSCorrelationID");
-        gateway.setSendTimeout(DEFAULT_JMS_TIMEOUT);
-        gateway.setReceiveTimeout(DEFAULT_JMS_TIMEOUT);
-        return gateway;
-    }
-
-    @Bean
-    public ActiveMQConnectionFactory artemisSSLConnectionFactory() {
-        ActiveMQConnectionFactory artemisConnectionFactory = new ActiveMQConnectionFactory(brokerURL);
-        artemisConnectionFactory.setUser(user);
-        artemisConnectionFactory.setPassword(password);
-        return artemisConnectionFactory;
     }
 }
