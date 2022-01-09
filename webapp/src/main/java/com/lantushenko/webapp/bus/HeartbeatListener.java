@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 public class HeartbeatListener {
     private Logger logger = Logger.getLogger(HeartbeatListener.class.getName());
 
-    @JmsListener(destination = HeartbeatMessage.QUEUE_NAME)
+    //@JmsListener(destination = HeartbeatMessage.QUEUE_NAME)
     public void listenHeartbeat(HeartbeatMessage message){
         logger.info("Heartbeat message received: " + message.getMessage());
     }

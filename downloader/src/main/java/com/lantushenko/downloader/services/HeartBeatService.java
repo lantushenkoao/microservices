@@ -23,7 +23,7 @@ public class HeartBeatService {
             log.info("Sending heartbeat...");
             HeartbeatMessage message = new HeartbeatMessage();
             message.setMessage("Sending heartbeat with counter value: " + counter++);
-            jmsTemplate.convertAndSend(HeartbeatMessage.QUEUE_NAME, message);
+            //jmsTemplate.convertAndSend(HeartbeatMessage.QUEUE_NAME, message);
             Thread.sleep(2000);
         }
     }

@@ -20,12 +20,4 @@ public class DownloaderApplication {
 		log.info("Starting the application");
 		SpringApplication.run(DownloaderApplication.class, args);
 	}
-
-	@Bean // Serialize message content to json using TextMessage
-	public MessageConverter jacksonJmsMessageConverter() {
-		MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter();
-		converter.setTargetType(MessageType.TEXT);
-		converter.setTypeIdPropertyName("_type");
-		return converter;
-	}
 }
