@@ -1,4 +1,4 @@
-package com.lantushenko.downloader.services;
+package com.lantushenko.downloader.service;
 
 import com.lantushenko.api.HeartbeatMessage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,12 +19,12 @@ public class HeartBeatService {
 
     @EventListener(ApplicationReadyEvent.class)
     public void sendMessage() throws InterruptedException {
-        while (true) {
-            log.info("Sending heartbeat...");
-            HeartbeatMessage message = new HeartbeatMessage();
-            message.setMessage("Sending heartbeat with counter value: " + counter++);
-            jmsTemplate.convertAndSend(HeartbeatMessage.QUEUE_NAME, message);
-            Thread.sleep(2000);
-        }
+//        while (true) {
+//            log.info("Sending heartbeat...");
+//            HeartbeatMessage message = new HeartbeatMessage();
+//            message.setMessage("Sending heartbeat with counter value: " + counter++);
+//            //jmsTemplate.convertAndSend(HeartbeatMessage.QUEUE_NAME, message);
+//            Thread.sleep(2000);
+//        }
     }
 }

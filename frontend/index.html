@@ -34,6 +34,15 @@
                     url: backendHost + '/api/users'
                 });
             });
+            $('.js-query-file').on('click', function(){
+                $.ajax({
+                    type: 'POST',
+                    headers: {
+                        "Authorization": 'Bearer ' + jwt
+                    },
+                    url: backendHost + '/api/file/query'
+                });
+            });
         });
     </script>
 </head>
@@ -47,6 +56,10 @@ Testing JWT login page
 <p>
     List users
     <input type="button" value="List users" class="js-list-users">
+</p>
+<p>
+    Query file
+    <input type="button" value="Query file" class="js-query-file">
 </p>
 <p>
     JWT header: <span class="js-jwt-header"></span>
