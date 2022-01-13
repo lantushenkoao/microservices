@@ -1,4 +1,4 @@
-package com.lantushenko.downloader.services;
+package com.lantushenko.downloader.gateway;
 
 import com.lantushenko.api.FileQueryReply;
 import com.lantushenko.api.FileQueryRequest;
@@ -15,9 +15,9 @@ import javax.annotation.Resource;
 import java.util.logging.Logger;
 
 @Service
-public class FileSenderGateway {
+public class FileRequestReplyGateway {
 
-    Logger log = Logger.getLogger(FileSenderGateway.class.getName());
+    Logger log = Logger.getLogger(FileRequestReplyGateway.class.getName());
 
     @Resource
     private JmsTemplate jmsTemplate;
