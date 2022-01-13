@@ -19,6 +19,7 @@ import org.springframework.integration.file.filters.RegexPatternFileListFilter;
 import org.springframework.integration.handler.LoggingHandler;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.io.File;
@@ -26,6 +27,8 @@ import java.time.Duration;
 import java.util.Arrays;
 
 //https://medium.com/@changeant/file-poller-with-spring-integration-dsl-ecb7bc996ba5
+//https://github.com/iainporter/spring-file-poller
+@Component
 public class FilePoolingIntegration {
 
     @Value("${inbound.directory-path}")
@@ -86,8 +89,8 @@ public class FilePoolingIntegration {
     public IntegrationFlow sendFile() {
         return IntegrationFlows.from(INBOUND_CHANNEL)
                 .transform(m -> new StringBuilder((String)m).reverse().toString())
-                .handle(fileMessageHandlerGateway)
                 .log(LoggingHandler.Level.INFO)
+                .handle(fileMessageHandlerGateway)
                 .get();
     }
 
