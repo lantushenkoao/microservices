@@ -2,3 +2,9 @@ spring.artemis.mode=native
 spring.artemis.broker-url=localhost:9876
 spring.artemis.user=admin
 spring.artemis.password=secret
+
+inbound.directory-path=k:/test-downloader
+inbound.filename.regex=^\.*$
+inbound.file-poller-fixed-delay=1
+inbound.file-poller-max-messages-per-poll=5
+inbound.file-poller-thread-pool-size=2
