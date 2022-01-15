@@ -1,21 +1,23 @@
 package com.lantushenko.webapp.config;
 
+import com.lantushenkoao.common.JacksonJsonMessageConverter;
+import com.lantushenkoao.common.destinations.DestinationResolver;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.jms.support.converter.MappingJackson2MessageConverter;
 import org.springframework.jms.support.converter.MessageConverter;
-import org.springframework.jms.support.converter.MessageType;
 
 @Configuration
 public class JMSConfig {
 
     public static final long DEFAULT_JMS_TIMEOUT = 30L;
 
-    @Bean // Serialize message content to json using TextMessage
+    @Bean
     public MessageConverter jacksonJmsMessageConverter() {
-        MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter();
-        converter.setTargetType(MessageType.TEXT);
-        converter.setTypeIdPropertyName("_type");
-        return converter;
+        return new JacksonJsonMessageConverter();
+    }
+
+    @Bean
+    public DestinationResolver destinationResolver(){
+        return new DestinationResolver();
     }
 }
