@@ -10,13 +10,17 @@ import {BACKEND_HOST} from './api/constants';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import russianMessages from 'ra-language-russian';
 import {Dashboard} from "./routes/dashboard/Dashboard";
+import { customLightTheme } from './themes/customLightTheme';
 
 const i18nProvider = polyglotI18nProvider(() => russianMessages, 'ru');
 
 
 const dataProvider = jsonServerProvider(BACKEND_HOST, httpClient);
 const App = () => (
-    <Admin dataProvider={dataProvider} authProvider={authProvider} i18nProvider={i18nProvider}>
+    <Admin dataProvider={dataProvider}
+           authProvider={authProvider}
+           i18nProvider={i18nProvider}
+           theme={customLightTheme}>
         <Resource name="blankPage" options={{ label: 'Домашняя страница' }} list={Dashboard}/>
         <Resource name="api/users" options={{ label: 'Пользователи' }} edit={EditUser}  list={UserList} create={CreateUser} />
     </Admin>
