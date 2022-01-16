@@ -29,6 +29,7 @@ dependencies {
 	implementation 'org.mapstruct:mapstruct:1.4.2.Final'
 	implementation 'org.springframework.boot:spring-boot-starter-artemis'
 	implementation project(':api')
+	implementation project(':common')
 	runtimeOnly 'org.postgresql:postgresql'
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'

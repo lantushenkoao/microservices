@@ -1,6 +1,6 @@
 package com.lantushenko.downloader.integration;
 
-import com.lantushenko.downloader.gateway.FileMessageHandlerGateway;
+import com.lantushenko.downloader.gateway.FileMessageSenderGateway;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.task.TaskExecutor;
@@ -12,7 +12,6 @@ import org.springframework.integration.dsl.Pollers;
 import org.springframework.integration.file.DirectoryScanner;
 import org.springframework.integration.file.FileReadingMessageSource;
 import org.springframework.integration.file.RecursiveDirectoryScanner;
-import org.springframework.integration.file.dsl.Files;
 import org.springframework.integration.file.filters.AcceptOnceFileListFilter;
 import org.springframework.integration.file.filters.CompositeFileListFilter;
 import org.springframework.integration.file.filters.RegexPatternFileListFilter;
@@ -45,7 +44,7 @@ public class FilePoolingIntegration {
     public static final String INBOUND_CHANNEL = "inbound-channel";
 
     @Resource
-    private FileMessageHandlerGateway fileMessageHandlerGateway;
+    private FileMessageSenderGateway fileMessageHandlerGateway;
 
 
     @Bean(name = INBOUND_CHANNEL)
@@ -80,7 +79,7 @@ public class FilePoolingIntegration {
                         c -> c.poller(Pollers.fixedDelay(Duration.ofSeconds(fixedDelay))
                                 .taskExecutor(taskExecutor)
                                 .maxMessagesPerPoll(maxMessagesPerPoll)))
-                .transform(Files.toStringTransformer())
+                .transform(new FileEventTransformer())
                 .channel(INBOUND_CHANNEL)
                 .get();
     }
@@ -88,7 +87,6 @@ public class FilePoolingIntegration {
     @Bean
     public IntegrationFlow sendFile() {
         return IntegrationFlows.from(INBOUND_CHANNEL)
-                .transform(m -> new StringBuilder((String)m).reverse().toString())
                 .log(LoggingHandler.Level.INFO)
                 .handle(fileMessageHandlerGateway)
                 .get();
