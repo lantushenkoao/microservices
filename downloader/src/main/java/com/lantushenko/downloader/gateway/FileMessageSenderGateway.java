@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 import javax.jms.DeliveryMode;
 
-@Component
+@Component("fileMessageSenderGateway")
 @Slf4j
 public class FileMessageSenderGateway implements MessageHandler {
 
