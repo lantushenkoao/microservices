@@ -8,12 +8,12 @@ import org.springframework.stereotype.Component;
 import java.io.File;
 
 @Component
-public class FileEventTransformer implements GenericTransformer<File, FileEventMessage> {
+public class SmbFileEventTransformer  implements GenericTransformer<File, FileEventMessage> {
     @Override
     public FileEventMessage transform(File source) {
         return FileEventMessage.builder()
-                .fileSource(FileSource.LOCAL_FOLDER)
                 .fileName(source.getName())
+                .fileSource(FileSource.SMB)
                 .size(source.getTotalSpace())
                 .build();
     }

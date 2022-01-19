@@ -3,23 +3,27 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
        xmlns:int="http://www.springframework.org/schema/integration"
        xmlns:int-file="http://www.springframework.org/schema/integration/file"
+       xmlns:int-smb="http://www.springframework.org/schema/integration/smb"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
        http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
-       http://www.springframework.org/schema/integration/file  https://www.springframework.org/schema/integration/file/spring-integration-file.xsd">
-    <int:channel id="inbound-channel"/>
-    <int:channel id="outbound-channel"/>
+       http://www.springframework.org/schema/integration/file  https://www.springframework.org/schema/integration/file/spring-integration-file.xsd
+       http://www.springframework.org/schema/integration/smb https://www.springframework.org/schema/integration/smb/spring-integration-smb.xsd
+">
+    <int:channel id="inbound-file-channel"/>
+    <int:channel id="inbound-smb-channel"/>
     <int:channel id="file-event-messages"/>
+    <int:channel id="outbound-channel"/>
 
-    <int:transformer id="fileToMessageTransformer" ref="fileEventTransformer"
-                     input-channel="inbound-channel" output-channel="file-event-messages"/>
 
-    <int:service-activator input-channel="file-event-messages"
-                           output-channel="outbound-channel"
-                           ref="fileMessageSenderGateway" />
+    <int-smb:inbound-channel-adapter session-factory="smbSessionFactory"
+                                     remote-directory="smb-remote"
+                                     local-directory="${inbound.smb.local-directory-path}"
+                                     channel="inbound-smb-channel"
+    />
 
     <int-file:inbound-channel-adapter directory="${inbound.directory-path}"
-                                      auto-startup="true" channel="inbound-channel"
+                                      auto-startup="true" channel="inbound-file-channel"
                                       filename-regex="${inbound.filename.regex}"
                                       id="fileListener">
                                       <int:poller id="filePoller"
@@ -27,4 +31,16 @@
                                                   max-messages-per-poll="${inbound.file-poller-max-messages-per-poll}"/>
 
     </int-file:inbound-channel-adapter>
+
+    <int:transformer id="fileToMessageTransformer" ref="fileEventTransformer"
+                     input-channel="inbound-file-channel" output-channel="file-event-messages"/>
+
+    <int:transformer id="smbFileToMessageTransformer" ref="smbFileEventTransformer"
+                     input-channel="inbound-smb-channel" output-channel="file-event-messages"
+    />
+    <int:service-activator input-channel="file-event-messages"
+                           output-channel="outbound-channel"
+                           ref="fileMessageSenderGateway" />
+
+
 </beans>
