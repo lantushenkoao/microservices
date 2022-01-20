@@ -8,6 +8,13 @@ group = 'com.lantushenko'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
 
+jar {
+	manifest {
+		attributes 'Main-Class': 'com.lantushenko.downloader.DownloaderApplication'
+	}
+}
+
+
 repositories {
 	mavenCentral()
 }

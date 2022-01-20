@@ -7,6 +7,9 @@ The following modules implemented:
 ## Downloader
 A module to extract, load and transform data. The data is to be sent to ActiveMQ Artemis bus.
 Module uses Spring Integration framework to work with data sources
+Currently enabled datasources are:
+ - Local file folder listener
+ - SMB remote folder listener
 ## Webapp
 Web application backend. Uses Spring Boot + JPA. Liquibase is used to update database. 
 The module is also a consumer for ActiveMQ messages produced by Downloader.

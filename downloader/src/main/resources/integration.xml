@@ -15,12 +15,21 @@
     <int:channel id="file-event-messages"/>
     <int:channel id="outbound-channel"/>
 
-
     <int-smb:inbound-channel-adapter session-factory="smbSessionFactory"
+                                     delete-remote-files="true"
+                                     filename-pattern="*"
                                      remote-directory="smb-remote"
                                      local-directory="${inbound.smb.local-directory-path}"
-                                     channel="inbound-smb-channel"
-    />
+                                     channel="inbound-smb-channel">
+        <int:poller fixed-rate="1000"/>
+    </int-smb:inbound-channel-adapter>
+
+    <bean id="smbSessionFactory" class="org.springframework.integration.smb.session.SmbSessionFactory">
+        <property name="host"        value="${inbound.smb.host}"/>
+        <property name="username"    value="${inbound.smb.user}"/>
+        <property name="password"    value="${inbound.smb.password}"/>
+        <property name="shareAndDir" value="/"/>
+    </bean>
 
     <int-file:inbound-channel-adapter directory="${inbound.directory-path}"
                                       auto-startup="true" channel="inbound-file-channel"
