@@ -1,7 +1,7 @@
 package com.lantushenko.webapp.controller;
 
 
-import com.lantushenko.webapp.bus.FileDownloaderGateway;
+import com.lantushenko.webapp.gateway.FileDownloaderGateway;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

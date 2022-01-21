@@ -1,25 +1,17 @@
-package com.lantushenko.webapp.bus;
+package com.lantushenko.webapp.gateway;
 
 import com.lantushenko.api.FileQueryReply;
 import com.lantushenko.api.FileQueryRequest;
 import com.lantushenko.webapp.config.JMSConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.activemq.artemis.jms.client.ActiveMQQueue;
-import org.apache.activemq.artemis.reader.MessageUtil;
-import org.springframework.jms.core.JmsMessagingTemplate;
 import org.springframework.jms.core.JmsTemplate;
-import org.springframework.jms.core.MessageCreator;
-import org.springframework.jms.support.JmsHeaders;
 import org.springframework.jms.support.converter.MessageConverter;
-import org.springframework.messaging.core.MessagePostProcessor;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.jms.*;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
-import java.util.logging.Logger;
 
 //https://aniruthmp.github.io/Spring-JMS-request-response/
 //https://memorynotfound.com/spring-jms-setting-reading-header-properties-example/
@@ -40,7 +32,6 @@ public class FileDownloaderGateway {
         jmsTemplate.setReceiveTimeout(JMSConfig.DEFAULT_JMS_TIMEOUT);
         Message msg = jmsTemplate.sendAndReceive(FileQueryRequest.QUEUE_NAME, session -> {
             Message message = messageConverter.toMessage(request, session);
-            message.setJMSCorrelationID(UUID.randomUUID().toString());
             message.setJMSReplyTo(new ActiveMQQueue(FileQueryReply.QUEUE_NAME));
             message.setJMSExpiration(JMSConfig.DEFAULT_JMS_TIMEOUT);
             message.setJMSDeliveryMode(DeliveryMode.NON_PERSISTENT);

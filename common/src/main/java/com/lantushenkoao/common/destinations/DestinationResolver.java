@@ -1,6 +1,6 @@
 package com.lantushenkoao.common.destinations;
 
-import com.lantushenko.api.FileEventMessage;
+import com.lantushenko.api.FileEventDocument;
 import com.lantushenkoao.common.exceptions.DestinationNotFoundException;
 import org.apache.activemq.artemis.jms.client.ActiveMQDestination;
 import org.apache.activemq.artemis.jms.client.ActiveMQQueue;
@@ -13,7 +13,7 @@ public class DestinationResolver {
     private Map<Class, ActiveMQDestination> destinationMap = new HashMap<>();
 
     public DestinationResolver(){
-        destinationMap.put(FileEventMessage.class, new ActiveMQQueue("live.microservices.file.queues"));
+        destinationMap.put(FileEventDocument.class, new ActiveMQQueue("live.microservices.file.queues"));
     }
 
     public ActiveMQDestination resolve(Class messageClass){

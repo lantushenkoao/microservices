@@ -7,7 +7,7 @@ import lombok.*;
 @Data
 @Builder
 @ToString
-public class FileEventMessage implements Message{
+public class FileEventDocument implements Message{
     private String fileName;
     private long size;
     private FileSource fileSource;

@@ -15,13 +15,10 @@ public class CalendarMessagePostProcessor implements MessagePostProcessor {
 
     private int deliveryMode;
     private Destination replyTo;
-    private Class messageType;
 
     @Override
     public Message postProcessMessage(Message message) throws JMSException {
 
-        message.setJMSCorrelationID(UUID.randomUUID().toString());
-        message.setJMSReplyTo(new ActiveMQQueue(FileQueryReply.QUEUE_NAME));
         message.setJMSDeliveryMode(deliveryMode);
         if (null != replyTo) {
             message.setJMSReplyTo(replyTo);

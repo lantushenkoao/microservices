@@ -24,14 +24,14 @@ public class FileRequestReplyGateway {
 
     @JmsListener(destination = FileQueryRequest.QUEUE_NAME)
     public void receiveMessageAndReply(
-            @Header(JmsHeaders.CORRELATION_ID) String correlationId,
+            @Header(JmsHeaders.MESSAGE_ID) String incomingMessageId,
             @Header(JmsHeaders.REPLY_TO) ActiveMQQueue replyTo,
             @Payload FileQueryRequest request) {
         log.info("Received request: " + request.getFileName());
         FileQueryReply reply = new FileQueryReply(request.getFileName() + "-reply");
 
         jmsTemplate.convertAndSend(replyTo, reply, m -> {
-            m.setJMSCorrelationID(correlationId);
+            m.setJMSCorrelationID(incomingMessageId);
             m.setJMSTimestamp(System.nanoTime());
             m.setJMSExpiration(JMSConfig.DEFAULT_JMS_TIMEOUT);
             return m;
