@@ -15,7 +15,7 @@ public class FileEventListenerGateway {
     @Resource
     private DestinationResolver destinationResolver;
 
-    @JmsListener(destination = "#{destinationResolver.resolveAddress(T(com.lantushenko.api.FileEventMessage))}")
+    @JmsListener(destination = "#{destinationResolver.resolveAddress(T(com.lantushenko.api.FileEventDocument))}")
     public void handleFileEvent(FileEventDocument fileEvent){
         log.info("Received message: {}", fileEvent);
     }

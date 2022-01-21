@@ -28,7 +28,7 @@ public class FileMessageSenderGateway implements MessageHandler {
         FileEventDocument event = (FileEventDocument) message.getPayload();
         log.info("Got a message {}. Sending...", event);
         CalendarMessagePostProcessor postProcessor = new CalendarMessagePostProcessor(DeliveryMode.PERSISTENT,
-                null, FileEventDocument.class);
+                null);
         jmsTemplate.convertAndSend(destinationResolver.resolve(event.getClass()), event, postProcessor);
         log.info("Message has been sent");
     }
