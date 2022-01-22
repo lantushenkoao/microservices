@@ -33,3 +33,5 @@ hs_err_pid*
 /downloader/.gradle/
 /downloader/build/
 /api/build/
+/downloader/out/
+/webapp/out/
