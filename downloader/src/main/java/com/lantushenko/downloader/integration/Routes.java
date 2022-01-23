@@ -14,6 +14,8 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 
+import static com.lantushenkoao.common.JacksonJsonMessageConverter.JMS_TYPE_ID_HEADER_NAME;
+
 @Component
 @Slf4j
 public class Routes extends RouteBuilder{
@@ -37,7 +39,7 @@ public class Routes extends RouteBuilder{
 
         from(String.format("file:/%s?noop=true&delay=10s", directoryPath))
                 .routeId("inbound-local-file")
-                .removeHeaders("*")
+                //.removeHeaders("*")
                 .transform(new Expression(){
                     @Override
                     public FileEventDocument evaluate(Exchange exchange, Class type) {
@@ -54,7 +56,7 @@ public class Routes extends RouteBuilder{
         from(String.format("smb://%s:%s@localhost/%s?delay=5000&localWorkDirectory=%s",
                 smbUser, smbPassword, smbRemotePath, smbLocalPath))
                 .routeId("inbound-smb-file")
-                .removeHeaders("*")
+                //.removeHeaders("*")
                 .transform(new Expression(){
                     @Override
                     public FileEventDocument evaluate(Exchange exchange, Class type) {
@@ -69,7 +71,7 @@ public class Routes extends RouteBuilder{
         from("direct:fileDocuments")
                 .marshal(new JacksonDataFormat())
                 .log("Received file event - ${body}, headers: ${headers}")
-                .setHeader("XMessageType", constant(FileEventDocument.class.getName()))
+                .setHeader(JMS_TYPE_ID_HEADER_NAME, constant(FileEventDocument.class.getName()))
                 .convertBodyTo(String.class)
                 .to(String.format("activemq:queue:%s",
                         destinationResolver.resolveAddress(FileEventDocument.class)))

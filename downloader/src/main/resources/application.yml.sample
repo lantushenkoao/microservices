@@ -1,0 +1,19 @@
+spring:
+  artemis:
+    mode: native
+    broker-url: tcp://localhost:61616
+    user: smart_user
+    password: xxx
+
+inbound:
+  directory-path: k:/test-downloader/files
+  filename.regex: ^\.*$
+  file-poller-fixed-delay: 1
+  file-poller-max-messages-per-poll: 5
+  file-poller-thread-pool-size: 2
+  smb:
+    local-directory-path: k:/test-downloader/smb-local
+    remote-directory-path: smb-remote
+    host: localhost
+    user: admin
+    password: xxx
