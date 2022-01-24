@@ -12,10 +12,6 @@ public class JMSConfig {
     public static final long DEFAULT_JMS_TIMEOUT = 10L;
 
     @Bean
-    public MessageConverter jacksonJmsMessageConverter() {
-        return new JacksonJsonMessageConverter();
-    }
-    @Bean
     public DestinationResolver destinationResolver(){
         return new DestinationResolver();
     }
